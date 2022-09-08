@@ -3,20 +3,26 @@ import { getImgs } from './js/getImgs';
 import { renderGallery } from './js/renderGallery';
 
 const searchForm = document.getElementById('search-form');
+const btnLoadMore = document.querySelector('.load-more');
+const galleryWrapper = document.querySelector('.gallery');
 
-searchForm.addEventListener('submit', event => {
+searchForm.addEventListener('submit', async event => {
   event.preventDefault();
 
-  getImgs(event.target.elements.searchQuery.value)
-    .then(({ data }) => {
-      if (!data.total) {
-        Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
+  const { data } = await getImgs(event.target.elements.searchQuery.value);
+  galleryWrapper.innerHTML = '';
 
-        return;
-      }
+  if (!data.total) {
+    btnLoadMore.classList.add('hidden');
 
-      renderGallery(data.hits);
-    });
+    Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.',
+    );
+
+    return;
+  }
+
+  galleryWrapper.innerHTML = renderGallery(data.hits);
+
+  btnLoadMore.classList.remove('hidden');
 });

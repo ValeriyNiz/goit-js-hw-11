@@ -1,0 +1,47 @@
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px 0;
+
+}
+
+.photo-card {
+  width: 25%;
+  padding: 0 15px 30px;
+
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+
+.info {
+  display: flex;
+  box-shadow: 2px 0 5px rgba(#000, 0.3);
+  border-radius: 0 0 4px 4px;
+}
+
+.info-item {
+  width: 25%;
+  text-align: center;
+
+  b {
+    display: block;
+  }
+}
+
+.load-more {
+  display: block;
+  width: 200px;
+  height: 40px;
+  background-color: aqua;
+  border-radius: 4px;
+  border: none;
+  margin: 0 auto 30px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
