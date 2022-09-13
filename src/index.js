@@ -24,11 +24,19 @@ const showLastPageMessage = ({ total, totalHits }) => {
 }
 
 
+
 btnLoadMore.addEventListener('click', async () => {
   const { data } = await getImgs(searchQuery, ++page);
   galleryWrapper.insertAdjacentHTML('beforeend', renderGallery(data.hits));
   showLastPageMessage(data);  
+  if (data.totalHits) {
+    notifySuccess(data.totalHits);
+  }
 });
+
+function notifySuccess(success) {
+    Notify.success(`Hooray! We found ${success} images.`);  
+}
 
 searchForm.addEventListener('submit', async event => {
   event.preventDefault();
@@ -40,7 +48,7 @@ searchForm.addEventListener('submit', async event => {
   galleryWrapper.innerHTML = '';
 
   if (data.totalHits) {
-    Notify.success(`Hooray! We found ${data.totalHits} images.`);
+    notifySuccess(data.totalHits);
   }
 
   if (!data.total) {
