@@ -67,5 +67,7 @@ searchForm.addEventListener('submit', async event => {
   btnLoadMore.classList.remove('hidden');
 
   showLastPageMessage(data);
+
+  searchForm.reset();
 });
 
