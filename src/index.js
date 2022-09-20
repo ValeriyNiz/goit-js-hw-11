@@ -8,6 +8,7 @@ const searchForm = document.getElementById('search-form');
 const btnLoadMore = document.querySelector('.load-more');
 const galleryWrapper = document.querySelector('.gallery');
 let page = 1;
+const perPage = 40;
 let searchQuery = '';
 
 const lightbox = new SimpleLightbox('.gallery a', {
@@ -16,8 +17,8 @@ const lightbox = new SimpleLightbox('.gallery a', {
 });
 
 
-const showLastPageMessage = ({ total, totalHits }) => {
-  if (total === totalHits) {
+const showLastPageMessage = (totalHits) => {
+  if ((page * perPage) >= totalHits) {
     btnLoadMore.classList.add('hidden');
     Notify.warning("We're sorry, but you've reached the end of search results.");
   }
@@ -28,10 +29,7 @@ const showLastPageMessage = ({ total, totalHits }) => {
 btnLoadMore.addEventListener('click', async () => {
   const { data } = await getImgs(searchQuery, ++page);
   galleryWrapper.insertAdjacentHTML('beforeend', renderGallery(data.hits));
-  showLastPageMessage(data);  
-  if (data.totalHits) {
-    notifySuccess(data.totalHits);
-  }
+  showLastPageMessage(data.totalHits);    
 });
 
 function notifySuccess(success) {
@@ -44,7 +42,7 @@ searchForm.addEventListener('submit', async event => {
   searchQuery = event.target.elements.searchQuery.value;
   page = 1;
 
-  const { data } = await getImgs(searchQuery, page);
+  const { data } = await getImgs(searchQuery, page, perPage);
   galleryWrapper.innerHTML = '';
 
   if (data.totalHits) {
